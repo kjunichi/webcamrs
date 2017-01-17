@@ -1,0 +1,7 @@
+[package]
+name = "webcamrs"
+version = "0.1.0"
+authors = ["Junichi Kajiwara <junichi.kajiwara@gmail.com>"]
+[dependencies]
+
+libc = "0.1"
