@@ -9,7 +9,23 @@ pub mod cv {
     pub struct Capture;
     pub struct IplImage;
 
+    #[cfg(windows)]
+    #[link(name = "opencv_world320")]
+    extern"C" {
+        fn cvDestroyAllWindows() -> c_void;
+        fn cvNamedWindow(title: * const c_char) -> c_int;
+        fn cvShowImage(name: * const c_char, image: * const IplImage) -> c_void;
+        fn cvWaitKey(delay: c_int) -> c_int;
+        fn cvCreateCameraCapture(index: c_int) -> * mut Capture;
+        fn cvQueryFrame(capture: * mut Capture) -> * mut IplImage;
+        fn cvSaveImage(filename: * const c_char, image: * const IplImage, params: *const c_int) -> c_int;
+        fn cvReleaseCapture(capture: & * mut Capture) -> c_void;
+    }
+
+    #[cfg(not(windows))]
     #[link(name = "opencv_highgui")]
+    #[link(name = "opencv_videoio")]
+    #[link(name = "opencv_imgcodecs")]
     extern"C" {
         fn cvDestroyAllWindows() -> c_void;
         fn cvNamedWindow(title: * const c_char) -> c_int;
@@ -88,18 +104,18 @@ fn main() {
     let name = "WebCam test";
     let capture = cv::create_camera_capture(0);
     cv::named_window(name);
-    loop {
+    //loop {
         let frame = cv::query_frame(capture);
-        cv::show_image(name, frame as * const cv::IplImage);
+        /*cv::show_image(name, frame as * const cv::IplImage);
         let c = cv::wait_key(2);
         if c == 0x1b {
             break;
         }
-        if c == 0x20 {
+        if c == 0x20 {*/
           cv::save_image("snap.jpg",frame as * const cv::IplImage);
-          break;
-        }
-    }
+         /* break;
+        }*/
+    //}
     cv::release_capture(capture);
     cv::destroy_all_windows();
 }
