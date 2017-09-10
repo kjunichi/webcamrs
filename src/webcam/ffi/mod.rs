@@ -1,10 +1,20 @@
 extern crate libc;
-// use self::libc::{ c_char, c_double, c_int, c_schar, c_void }
-use self::libc::{c_char, c_int, c_void};
-// use std::ffi::CString;
+use self::libc::{c_char, c_int, c_void, c_uchar};
 
 pub enum Capture {}
 pub enum IplImage {}
+
+#[repr(C)]
+pub struct CvMat {
+    pub _type: c_int,
+    pub step: c_int,
+
+    pub refcount: *mut c_int,
+    pub hdr_refcount: c_int,
+    pub ptr: *mut c_uchar,
+    pub rows: c_int,
+    pub cols: c_int,
+}
 
 #[cfg(windows)]
 #[link(name = "opencv_world320")]
@@ -20,6 +30,10 @@ extern "C" {
                        params: *const c_int)
                        -> c_int;
     pub fn cvReleaseCapture(capture: &*mut Capture) -> c_void;
+    pub fn cvEncodeImage(ext: *const c_char,
+                         image: *mut IplImage,
+                         params: *const c_int)
+                         -> *mut CvMat;
 }
 
 #[cfg(not(windows))]
@@ -38,4 +52,8 @@ extern "C" {
                        params: *const c_int)
                        -> c_int;
     pub fn cvReleaseCapture(capture: &*mut Capture) -> c_void;
+    pub fn cvEncodeImage(ext: *const c_char,
+                         image: *mut IplImage,
+                         params: *const c_int)
+                         -> *mut CvMat;
 }
