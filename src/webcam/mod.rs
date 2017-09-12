@@ -69,8 +69,8 @@ pub fn encode_image(ext: &str, image: &IplImage, params: Vec<i32>) -> CvMat {
     };
     let len = unsafe { (*raw_mat).cols };
     let mut buf: Vec<u8> = Vec::new();
+    let ptr = unsafe { (*raw_mat).ptr };
     for i in 0..len {
-        let ptr = unsafe { (*raw_mat).ptr };
         buf.push(unsafe { *(ptr.offset(i as isize)) });
     }
     let mat = CvMat {
