@@ -1,0 +1,20 @@
+language: rust
+cache: cargo
+
+matrix:
+  include:
+    - os: osx
+      rust: stable
+      env: TARGET=x86_64-apple-darwin
+
+before_install:
+  - export PATH="$PATH:$HOME/.cargo/bin"
+
+install:
+  - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain=$TRAVIS_RUST_VERSION
+  - rustc -V
+  - cargo -V
+  - brew install opencv
+
+script:
+- cargo build --verbose
