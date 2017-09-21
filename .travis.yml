@@ -15,6 +15,7 @@ install:
   - rustc -V
   - cargo -V
   - rm -f /usr/local/bin/f2py
+  - rm -f /usr/local/lib/python2.7/site-packages/numpy/__config__.py
   - brew install opencv
 
 script:
