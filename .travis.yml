@@ -1,0 +1,28 @@
+language: rust
+cache: cargo
+
+matrix:
+  include:
+    - rvm: 2.4.2
+      os: osx
+      rust: stable
+      env: TARGET=x86_64-apple-darwin
+
+before_install:
+  - export PATH="$PATH:$HOME/.cargo/bin"
+
+install:
+  - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain=$TRAVIS_RUST_VERSION
+  - rustc -V
+  - cargo -V
+  - rm -f /usr/local/bin/f2py
+  - rm -rf /usr/local/lib/python2.7/site-packages/numpy/*
+  - rvm install 2.4.2
+  - source $HOME/.rvm/scripts/rvm
+  - rvm use 2.4.2
+  - which ruby
+  - brew update
+  - brew install opencv
+
+script:
+- cargo build --verbose
