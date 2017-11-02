@@ -21,6 +21,7 @@ install:
   - source $HOME/.rvm/scripts/rvm
   - rvm use 2.4.2
   - which ruby
+  - brew update
   - brew install opencv
 
 script:
