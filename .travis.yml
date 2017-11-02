@@ -3,8 +3,8 @@ cache: cargo
 
 matrix:
   include:
-    - os: osx
-      rvm: 2.4.2
+    - rvm: 2.4.2
+      os: osx
       rust: stable
       env: TARGET=x86_64-apple-darwin
 
