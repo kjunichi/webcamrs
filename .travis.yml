@@ -17,6 +17,8 @@ install:
   - cargo -V
   - rm -f /usr/local/bin/f2py
   - rm -rf /usr/local/lib/python2.7/site-packages/numpy/*
+  - rvm install 2.4.2
+  - rvm use 2.4.2
   - brew install opencv
 
 script:
