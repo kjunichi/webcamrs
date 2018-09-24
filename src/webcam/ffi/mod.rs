@@ -5,6 +5,8 @@ mod link;
 
 pub enum Capture {}
 pub enum IplImage {}
+pub enum CvVideoCapture {}
+pub enum Cv2Mat {}
 
 #[repr(C)]
 pub struct CvMat {
@@ -19,10 +21,18 @@ pub struct CvMat {
 }
 
 extern "C" {
-    pub fn cvDestroyAllWindows() -> c_void;
+    pub fn cv_destroy_all_windows() -> c_void;
+    pub fn cv_named_window(title: *const c_char) -> c_void;
+    //pub fn cv_read(capture: *mut CvVideoCapture, frame: *mut Cv2Mat);
+    pub fn cv_read(capture: *mut CvVideoCapture) -> *mut Cv2Mat;
+    pub fn cv_imshow(winname: *const c_char, mat: *const Cv2Mat) -> c_void;
+    pub fn cv_video_capture(camnum: c_int) -> *mut CvVideoCapture;
+    pub fn cv_wait_key(delay: c_int) -> c_int;
+    pub fn cv_release_video_capture(capture: *mut CvVideoCapture) -> c_void;
+    pub fn cv_create_mat() -> *mut Cv2Mat;
+
     pub fn cvNamedWindow(title: *const c_char) -> c_int;
     pub fn cvShowImage(name: *const c_char, image: *const IplImage) -> c_void;
-    pub fn cvWaitKey(delay: c_int) -> c_int;
     pub fn cvCreateCameraCapture(index: c_int) -> *mut Capture;
     pub fn cvQueryFrame(capture: *mut Capture) -> *mut IplImage;
     pub fn cvSaveImage(filename: *const c_char,
@@ -34,4 +44,8 @@ extern "C" {
                          image: *mut IplImage,
                          params: *const c_int)
                          -> *mut CvMat;
+}
+#[link(name = "webcam", kind = "static")]
+extern "C" {
+    pub fn helloTest() -> c_void;
 }

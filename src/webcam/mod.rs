@@ -8,25 +8,31 @@ pub struct Capture {
     raw: *mut ffi::Capture,
 }
 
+pub struct VideoCapture {
+    raw: *mut ffi::CvVideoCapture
+}
+
 pub struct IplImage {
     raw: *mut ffi::IplImage,
 }
 
+pub struct Mat {
+    raw: *mut ffi::Cv2Mat,
+}
 pub struct CvMat {
     raw: *mut ffi::CvMat,
     pub cols: i32,
     pub rows: i32,
     pub buf: Vec<u8>,
 }
-pub fn destroy_all_windows() -> () {
-    unsafe {
-        ffi::cvDestroyAllWindows();
-    }
+
+pub fn create_mat() -> Mat {
+    Mat { raw: unsafe {ffi::cv_create_mat()}}
 }
 
 pub fn named_window(title: &str) -> () {
     unsafe {
-        ffi::cvNamedWindow(CString::new(title).unwrap().as_ptr());
+        ffi::cv_named_window(CString::new(title).unwrap().as_ptr());
     }
 }
 
@@ -40,6 +46,17 @@ pub fn query_frame(capture: &Capture) -> IplImage {
     IplImage { raw: unsafe { ffi::cvQueryFrame(raw_capture) } }
 }
 
+// pub fn readBad(capture: &VideoCapture, frame: &Mat) -> () {
+//     let raw_videocapture = capture.raw;
+//     let raw_mat = frame.raw;
+//     unsafe { ffi::cv_read(raw_videocapture, raw_mat) }
+// }
+
+pub fn read(capture: &VideoCapture) -> Mat {
+    let raw_videocapture = capture.raw;
+    Mat { raw: unsafe { ffi::cv_read(raw_videocapture) } }
+}
+
 pub fn show_image(name: &str, image: &IplImage) -> () {
     let raw_image = image.raw;
     unsafe {
@@ -47,8 +64,26 @@ pub fn show_image(name: &str, image: &IplImage) -> () {
     }
 }
 
+pub fn release(capture: &VideoCapture) -> () {
+    let raw_videocapture = capture.raw;
+    unsafe { ffi::cv_release_video_capture(raw_videocapture); }
+}
+
+pub fn video_capture(camnum: i32) -> VideoCapture {
+    VideoCapture {
+        raw: unsafe { ffi::cv_video_capture(camnum) }
+    }
+}
+
+pub fn imshow(name: &str, image: &Mat) -> () {
+    let raw_image = image.raw;
+    unsafe {
+        ffi::cv_imshow(CString::new(name).unwrap().as_ptr(), raw_image);
+    }
+}
+
 pub fn wait_key(delay: i32) -> i32 {
-    unsafe { ffi::cvWaitKey(delay) }
+    unsafe { ffi::cv_wait_key(delay) }
 }
 
 pub fn save_image(name: &str, image: &IplImage) -> i32 {
@@ -86,5 +121,17 @@ pub fn release_capture(capture: &Capture) -> () {
     let raw_capture = capture.raw;
     unsafe {
         ffi::cvReleaseCapture(&raw_capture);
+    }
+}
+
+pub fn destroy_all_windows() ->() {
+    unsafe {
+        ffi::cv_destroy_all_windows();
+    }
+}
+
+pub fn helloTest() -> () {
+    unsafe {
+        ffi::helloTest();
     }
 }

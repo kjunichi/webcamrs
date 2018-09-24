@@ -5,5 +5,5 @@
 extern {}
 
 #[cfg(windows)]
-#[link(name = "opencv_world320")]
+#[link(name = "opencv_world342")]
 extern {}

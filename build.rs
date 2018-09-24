@@ -4,4 +4,14 @@ fn main() {
 }
 
 #[cfg(not(target_os="macos"))]
-fn main() {}
+extern crate cc;
+
+fn main() {
+    cc::Build::new()
+        .cpp(true)
+        .warnings(true)
+        .file("src\\webcam\\cpp\\src\\webcam.cpp")
+        .include("src\\webcam\\cpp\\include")
+        .include("C:\\tools\\opencv\\build\\include")
+        .compile("libwebcam.a");
+}
