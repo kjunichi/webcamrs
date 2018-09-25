@@ -23,8 +23,8 @@ pub struct CvMat {
 extern "C" {
     pub fn cv_destroy_all_windows() -> c_void;
     pub fn cv_named_window(title: *const c_char) -> c_void;
-    //pub fn cv_read(capture: *mut CvVideoCapture, frame: *mut Cv2Mat);
-    pub fn cv_read(capture: *mut CvVideoCapture) -> *mut Cv2Mat;
+    pub fn cv_read(capture: *mut CvVideoCapture, frame: *mut Cv2Mat) -> c_void;
+    //pub fn cv_read(capture: *mut CvVideoCapture) -> *mut Cv2Mat;
     pub fn cv_imshow(winname: *const c_char, mat: *const Cv2Mat) -> c_void;
     pub fn cv_video_capture(camnum: c_int) -> *mut CvVideoCapture;
     pub fn cv_wait_key(delay: c_int) -> c_int;

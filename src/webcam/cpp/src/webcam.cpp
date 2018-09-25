@@ -38,15 +38,13 @@ extern "C"
         mat->raw_ptr = new Mat();
         return *mat;
     }
-
-    /*
+    
     void cv_read(cvVideoCapture cap, cv2Mat frame) {
-        //Mat mat = *((Mat*)(frame.raw_ptr));
-        Mat tmp;
-        *((VideoCapture*)(cap.raw_ptr)) >> tmp;
-        frame.raw_ptr = &tmp;
+        Mat *mat = (Mat*)(frame.raw_ptr);
+        (*((VideoCapture*)(cap.raw_ptr))).read(*mat);
     }
-    */
+    
+   /*
     cv2Mat cv_read(cvVideoCapture cap) {
         //Mat mat = *((Mat*)(frame.raw_ptr));
         Mat *tmp = new Mat();
@@ -55,6 +53,7 @@ extern "C"
         frame.raw_ptr = tmp;
         return frame;
     }
+    */
 
     void cv_imshow(const char*winname, cv2Mat mat) {
         Mat frame = *((Mat*)(mat.raw_ptr));

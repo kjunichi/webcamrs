@@ -46,16 +46,16 @@ pub fn query_frame(capture: &Capture) -> IplImage {
     IplImage { raw: unsafe { ffi::cvQueryFrame(raw_capture) } }
 }
 
-// pub fn readBad(capture: &VideoCapture, frame: &Mat) -> () {
-//     let raw_videocapture = capture.raw;
-//     let raw_mat = frame.raw;
-//     unsafe { ffi::cv_read(raw_videocapture, raw_mat) }
-// }
-
-pub fn read(capture: &VideoCapture) -> Mat {
+pub fn read(capture: &VideoCapture, frame: &Mat) -> () {
     let raw_videocapture = capture.raw;
-    Mat { raw: unsafe { ffi::cv_read(raw_videocapture) } }
+    let raw_mat = frame.raw;
+    unsafe { ffi::cv_read(raw_videocapture, raw_mat); }
 }
+
+// pub fn read(capture: &VideoCapture) -> Mat {
+//     let raw_videocapture = capture.raw;
+//     Mat { raw: unsafe { ffi::cv_read(raw_videocapture) } }
+// }
 
 pub fn show_image(name: &str, image: &IplImage) -> () {
     let raw_image = image.raw;
