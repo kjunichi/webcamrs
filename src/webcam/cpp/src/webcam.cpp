@@ -69,8 +69,10 @@ extern "C"
     cv2Mat cv_imencode(const char *ext, cv2Mat img, int *params) {
        vector<uchar> buf;
        imencode(ext, *((Mat*)(img.raw_ptr)), buf, vector<int>());
+       Mat *dst = new Mat();
+       imdecode(buf, 0, dst);
        cv2Mat frame;
-       frame.raw_ptr = new Mat(buf);
+       frame.raw_ptr = dst;
        return frame;
     }
 
