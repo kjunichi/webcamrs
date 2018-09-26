@@ -60,6 +60,10 @@ pub fn imwrite(filename: &str, frame: &Mat) -> i32 {
     unsafe { ffi::cv_imwrite(CString::new(filename).unwrap().as_ptr(), raw_mat) }
 }
 
+pub fn mat_cols(img: &Mat) -> i32 {
+    unsafe { ffi::cv_mat_cols(img.raw) }
+}
+
 pub fn mat_data(img: &Mat) -> Vec<u8> {
     let mut buf: Vec<u8> = Vec::new();
     let len = unsafe { ffi::cv_mat_cols(img.raw) };
