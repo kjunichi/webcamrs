@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "opencv2/opencv.hpp"
 
+using namespace std;
 using namespace cv;
 
 extern "C"
@@ -54,6 +56,23 @@ extern "C"
         return frame;
     }
     */
+    int cv_mat_cols(cv2Mat mat) {
+       Mat *frame = ((Mat*)(mat.raw_ptr));
+       return frame->cols;
+    }
+
+    unsigned char *cv_mat_data(cv2Mat mat) {
+        Mat *frame = ((Mat*)(mat.raw_ptr));
+        return frame->data;
+    }
+
+    cv2Mat cv_imencode(const char *ext, cv2Mat img, int *params) {
+       vector<uchar> buf;
+       imencode(ext, *((Mat*)(img.raw_ptr)), buf, vector<int>());
+       cv2Mat frame;
+       frame.raw_ptr = new Mat(buf);
+       return frame;
+    }
 
     void cv_imshow(const char*winname, cv2Mat mat) {
         Mat frame = *((Mat*)(mat.raw_ptr));
@@ -64,6 +83,11 @@ extern "C"
 
     void cv_release_video_capture(cvVideoCapture cap) {
         ((VideoCapture*)(cap.raw_ptr))->release();
+    }
+
+    int cv_imwrite(const char *filename, cv2Mat mat) {
+        Mat frame = *((Mat*)(mat.raw_ptr));
+        imwrite(filename,frame);
     }
 
     cvVideoCapture cv_video_capture(int camnum) {

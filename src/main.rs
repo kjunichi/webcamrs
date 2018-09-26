@@ -40,6 +40,15 @@ fn main() {
         if c == 0x1b {
             break;
         }
+        if c == 0x20 {
+            webcamrs::webcam::imwrite("snap.jpg", &frame);
+            let params = vec![];
+            let buf = webcamrs::webcam::imencode(".ppm", &frame, params);
+            for i in 0..12 {
+                println!("vec[{}] = {} ", i, buf[i] as char);
+            }
+            break;
+        }
     }
     webcamrs::webcam::release(&cap);
     webcamrs::webcam::destroy_all_windows();

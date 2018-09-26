@@ -18,7 +18,9 @@ pub struct IplImage {
 
 pub struct Mat {
     raw: *mut ffi::Cv2Mat,
+    pub buf: Vec<u8>,
 }
+
 pub struct CvMat {
     raw: *mut ffi::CvMat,
     pub cols: i32,
@@ -27,7 +29,8 @@ pub struct CvMat {
 }
 
 pub fn create_mat() -> Mat {
-    Mat { raw: unsafe {ffi::cv_create_mat()}}
+    Mat { buf: Vec::new(),
+    raw: unsafe {ffi::cv_create_mat()}}
 }
 
 pub fn named_window(title: &str) -> () {
@@ -52,6 +55,32 @@ pub fn read(capture: &VideoCapture, frame: &Mat) -> () {
     unsafe { ffi::cv_read(raw_videocapture, raw_mat); }
 }
 
+pub fn imwrite(filename: &str, frame: &Mat) -> i32 {
+    let raw_mat = frame.raw;
+    unsafe { ffi::cv_imwrite(CString::new(filename).unwrap().as_ptr(), raw_mat) }
+}
+
+pub fn mat_data(img: &Mat) -> Vec<u8> {
+    let mut buf: Vec<u8> = Vec::new();
+    let len = unsafe { ffi::cv_mat_cols(img.raw) };
+    let ptr = unsafe { ffi::cv_mat_data(img.raw) };
+     for i in 0..len {
+         buf.push(unsafe { *(ptr.offset(i as isize))});
+     }
+     return buf;
+}
+
+pub fn imencode(ext: &str, img: &Mat, params: Vec<i32>) -> Vec<u8>{
+    let raw_mat = img.raw;
+    let len = unsafe { ffi::cv_mat_cols(raw_mat) };
+    let dst_mat = Mat {buf: Vec::new(), raw: unsafe { ffi::cv_imencode(CString::new(ext).unwrap().as_ptr(), raw_mat, 0 as *const i32) }};
+    let mut buf: Vec<u8> = Vec::new();
+    let ptr = unsafe { ffi::cv_mat_data(dst_mat.raw) };
+    for i in 0..len {
+        buf.push(unsafe { *(ptr.offset(i as isize)) });
+    }
+    return buf;
+}
 // pub fn read(capture: &VideoCapture) -> Mat {
 //     let raw_videocapture = capture.raw;
 //     Mat { raw: unsafe { ffi::cv_read(raw_videocapture) } }
