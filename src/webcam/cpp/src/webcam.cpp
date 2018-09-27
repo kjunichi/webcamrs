@@ -96,6 +96,7 @@ extern "C"
     int cv_imwrite(const char *filename, cv2Mat mat) {
         Mat frame = *((Mat*)(mat.raw_ptr));
         imwrite(filename,frame);
+        return 0;
     }
 
     cvVideoCapture cv_video_capture(int camnum) {
