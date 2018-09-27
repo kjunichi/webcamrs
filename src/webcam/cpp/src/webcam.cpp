@@ -19,6 +19,11 @@ extern "C"
         void *raw_ptr;
     } cv2Mat;
 
+    typedef struct ImgBuffer_ {
+        void *ptr;
+        int size;
+    } ImgBuffer;
+
     void cv_destroy_all_windows()
     {
         destroyAllWindows();
@@ -66,14 +71,15 @@ extern "C"
         return frame->data;
     }
 
-    cv2Mat cv_imencode(const char *ext, cv2Mat img, int *params) {
+    ImgBuffer *cv_imencode(const char *ext, cv2Mat img, int *params) {
        vector<uchar> buf;
+       //buf = new vector<uchar>;
        imencode(ext, *((Mat*)(img.raw_ptr)), buf, vector<int>());
-       Mat *dst = new Mat();
-       imdecode(buf, 0, dst);
-       cv2Mat frame;
-       frame.raw_ptr = dst;
-       return frame;
+       //imdecode(buf, 0, dst);
+       ImgBuffer *dst = new ImgBuffer();
+       dst->ptr = &buf[0];
+       dst->size = buf.size();
+       return dst;
     }
 
     void cv_imshow(const char*winname, cv2Mat mat) {

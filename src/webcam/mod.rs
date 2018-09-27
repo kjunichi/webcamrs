@@ -16,6 +16,10 @@ pub struct IplImage {
     raw: *mut ffi::IplImage,
 }
 
+pub struct ImgBuffer {
+    raw: *mut ffi::ImgBuffer,
+}
+
 pub struct Mat {
     raw: *mut ffi::Cv2Mat,
     pub buf: Vec<u8>,
@@ -76,10 +80,10 @@ pub fn mat_data(img: &Mat) -> Vec<u8> {
 
 pub fn imencode(ext: &str, img: &Mat, params: Vec<i32>) -> Vec<u8>{
     let raw_mat = img.raw;
-    let len = unsafe { ffi::cv_mat_cols(raw_mat) };
-    let dst_mat = Mat {buf: Vec::new(), raw: unsafe { ffi::cv_imencode(CString::new(ext).unwrap().as_ptr(), raw_mat, 0 as *const i32) }};
+    let dst_buf = ImgBuffer { raw: unsafe { ffi::cv_imencode(CString::new(ext).unwrap().as_ptr(), raw_mat, 0 as *const i32) } };
     let mut buf: Vec<u8> = Vec::new();
-    let ptr = unsafe { ffi::cv_mat_data(dst_mat.raw) };
+    let ptr = unsafe { (*dst_buf.raw).ptr };
+    let len = unsafe { (*dst_buf.raw).size };
     for i in 0..len {
         buf.push(unsafe { *(ptr.offset(i as isize)) });
     }

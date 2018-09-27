@@ -9,6 +9,11 @@ pub enum CvVideoCapture {}
 pub enum Cv2Mat {}
 
 #[repr(C)]
+pub struct ImgBuffer {
+    pub ptr: *mut c_uchar,
+    pub size: c_int,
+}
+
 pub struct CvMat {
     pub _type: c_int,
     pub step: c_int,
@@ -31,11 +36,12 @@ extern "C" {
     pub fn cv_release_video_capture(capture: *mut CvVideoCapture) -> c_void;
     pub fn cv_create_mat() -> *mut Cv2Mat;
     pub fn cv_imwrite(filename: *const c_char, mat: *const Cv2Mat) -> c_int;
-    pub fn cv_imencode(ext: *const c_char, img: *const Cv2Mat, 
-                        params: *const c_int) -> *mut Cv2Mat;
+    // pub fn cv_imencode(ext: *const c_char, img: *const Cv2Mat, 
+    //                     params: *const c_int) -> *mut Cv2Mat;
     pub fn cv_mat_cols(mat: *const Cv2Mat) -> c_int;                    
     pub fn cv_mat_data(mat: *const Cv2Mat) -> *mut c_uchar;
-    
+    pub fn cv_imencode(ext: *const c_char, img: *const Cv2Mat, params: *const c_int) -> *mut ImgBuffer;
+
     pub fn cvNamedWindow(title: *const c_char) -> c_int;
     pub fn cvShowImage(name: *const c_char, image: *const IplImage) -> c_void;
     pub fn cvCreateCameraCapture(index: c_int) -> *mut Capture;
