@@ -87,6 +87,7 @@ pub fn imencode(ext: &str, img: &Mat, params: Vec<i32>) -> Vec<u8>{
     for i in 0..len {
         buf.push(unsafe { *(ptr.offset(i as isize)) });
     }
+    unsafe { ffi::cv_free_img_buffer(dst_buf.raw) };
     return buf;
 }
 // pub fn read(capture: &VideoCapture) -> Mat {

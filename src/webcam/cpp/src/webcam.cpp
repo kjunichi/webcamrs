@@ -22,6 +22,7 @@ extern "C"
     typedef struct ImgBuffer_ {
         void *ptr;
         int size;
+        void *raw;
     } ImgBuffer;
 
     void cv_destroy_all_windows()
@@ -75,11 +76,16 @@ extern "C"
        vector<uchar> *buf;
        buf = new vector<uchar>;
        imencode(ext, *((Mat*)(img.raw_ptr)), *buf, vector<int>());
-       //imdecode(buf, 0, dst);
        ImgBuffer *dst = new ImgBuffer();
        dst->ptr = buf->data();
        dst->size = buf->size();
+       dst->raw = buf;
        return dst;
+    }
+
+    void cv_free_img_buffer(ImgBuffer *buf) {
+        delete (vector<uchar>*)(buf->raw);
+        delete buf;
     }
 
     void cv_imshow(const char*winname, cv2Mat mat) {

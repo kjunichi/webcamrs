@@ -12,6 +12,7 @@ pub enum Cv2Mat {}
 pub struct ImgBuffer {
     pub ptr: *mut c_uchar,
     pub size: c_int,
+    pub raw: *mut c_void,
 }
 
 pub struct CvMat {
@@ -41,6 +42,7 @@ extern "C" {
     pub fn cv_mat_cols(mat: *const Cv2Mat) -> c_int;                    
     pub fn cv_mat_data(mat: *const Cv2Mat) -> *mut c_uchar;
     pub fn cv_imencode(ext: *const c_char, img: *const Cv2Mat, params: *const c_int) -> *mut ImgBuffer;
+    pub fn cv_free_img_buffer(buf: *mut ImgBuffer) -> c_void;
 
     pub fn cvNamedWindow(title: *const c_char) -> c_int;
     pub fn cvShowImage(name: *const c_char, image: *const IplImage) -> c_void;
