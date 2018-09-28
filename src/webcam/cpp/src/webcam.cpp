@@ -72,13 +72,13 @@ extern "C"
     }
 
     ImgBuffer *cv_imencode(const char *ext, cv2Mat img, int *params) {
-       vector<uchar> buf;
-       //buf = new vector<uchar>;
-       imencode(ext, *((Mat*)(img.raw_ptr)), buf, vector<int>());
+       vector<uchar> *buf;
+       buf = new vector<uchar>;
+       imencode(ext, *((Mat*)(img.raw_ptr)), *buf, vector<int>());
        //imdecode(buf, 0, dst);
        ImgBuffer *dst = new ImgBuffer();
-       dst->ptr = &buf[0];
-       dst->size = buf.size();
+       dst->ptr = buf->data();
+       dst->size = buf->size();
        return dst;
     }
 
