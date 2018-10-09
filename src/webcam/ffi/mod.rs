@@ -5,8 +5,9 @@ mod link;
 
 pub enum Capture {}
 pub enum IplImage {}
-pub enum CvVideoCapture {}
-pub enum Cv2Mat {}
+
+#[repr(C)] pub struct CvVideoCapture { private: [u8; 0] }
+#[repr(C)] pub struct Cv2Mat { private: [u8; 0] }
 
 #[repr(C)]
 pub struct ImgBuffer {
@@ -15,6 +16,7 @@ pub struct ImgBuffer {
     pub raw: *mut c_void,
 }
 
+#[repr(C)]
 pub struct CvMat {
     pub _type: c_int,
     pub step: c_int,

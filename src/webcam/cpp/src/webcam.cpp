@@ -9,15 +9,15 @@ using namespace cv;
 
 extern "C"
 {
-    typedef struct cvVideoCapture_
+    typedef struct CvVideoCapture_
     {
         void *raw_ptr;
-    } cvVideoCapture;
+    } CvVideoCapture;
 
-    typedef struct cv2Mat_
+    typedef struct Cv2Mat_
     {
         void *raw_ptr;
-    } cv2Mat;
+    } Cv2Mat;
 
     typedef struct ImgBuffer_ {
         void *ptr;
@@ -40,42 +40,32 @@ extern "C"
         namedWindow(title, 1);
     }
 
-    cv2Mat cv_create_mat() {
-        cv2Mat *mat;
-        mat = (cv2Mat*)malloc(sizeof(cv2Mat));
+    Cv2Mat *cv_create_mat() {
+        Cv2Mat *mat;
+        mat = (Cv2Mat*)malloc(sizeof(Cv2Mat));
         mat->raw_ptr = new Mat();
-        return *mat;
+        return mat;
     }
     
-    void cv_read(cvVideoCapture cap, cv2Mat frame) {
-        Mat *mat = (Mat*)(frame.raw_ptr);
-        (*((VideoCapture*)(cap.raw_ptr))).read(*mat);
+    void cv_read(CvVideoCapture *cap, Cv2Mat *frame) {
+        Mat *mat = (Mat*)(frame->raw_ptr);
+        ((VideoCapture*)(cap->raw_ptr))->read(*mat);
     }
     
-   /*
-    cv2Mat cv_read(cvVideoCapture cap) {
-        //Mat mat = *((Mat*)(frame.raw_ptr));
-        Mat *tmp = new Mat();
-        *((VideoCapture*)(cap.raw_ptr)) >> *tmp;
-        cv2Mat frame;
-        frame.raw_ptr = tmp;
-        return frame;
-    }
-    */
-    int cv_mat_cols(cv2Mat mat) {
-       Mat *frame = ((Mat*)(mat.raw_ptr));
+    int cv_mat_cols(Cv2Mat *mat) {
+       Mat *frame = ((Mat*)(mat->raw_ptr));
        return frame->cols;
     }
 
-    unsigned char *cv_mat_data(cv2Mat mat) {
-        Mat *frame = ((Mat*)(mat.raw_ptr));
+    unsigned char *cv_mat_data(Cv2Mat *mat) {
+        Mat *frame = ((Mat*)(mat->raw_ptr));
         return frame->data;
     }
 
-    ImgBuffer *cv_imencode(const char *ext, cv2Mat img, int *params) {
+    ImgBuffer *cv_imencode(const char *ext, Cv2Mat *img, int *params) {
        vector<uchar> *buf;
        buf = new vector<uchar>;
-       imencode(ext, *((Mat*)(img.raw_ptr)), *buf, vector<int>());
+       imencode(ext, *((Mat*)(img->raw_ptr)), *buf, vector<int>());
        ImgBuffer *dst = new ImgBuffer();
        dst->ptr = buf->data();
        dst->size = buf->size();
@@ -88,31 +78,33 @@ extern "C"
         delete buf;
     }
 
-    void cv_imshow(const char*winname, cv2Mat mat) {
-        Mat frame = *((Mat*)(mat.raw_ptr));
+    void cv_imshow(const char*winname, Cv2Mat *mat) {
+        Mat frame = *((Mat*)(mat->raw_ptr));
         if(!frame.empty()) {
             imshow(winname, frame);
         }
     }
 
-    void cv_release_video_capture(cvVideoCapture cap) {
-        ((VideoCapture*)(cap.raw_ptr))->release();
+    void cv_release_video_capture(CvVideoCapture *cap) {
+        ((VideoCapture*)(cap->raw_ptr))->release();
     }
 
-    int cv_imwrite(const char *filename, cv2Mat mat) {
-        Mat frame = *((Mat*)(mat.raw_ptr));
+    int cv_imwrite(const char *filename, Cv2Mat *mat) {
+        Mat frame = *((Mat*)(mat->raw_ptr));
         imwrite(filename,frame);
         return 0;
     }
 
-    cvVideoCapture cv_video_capture(int camnum) {
+    CvVideoCapture *cv_video_capture(int camnum) {
         VideoCapture *cap;
         cap = new VideoCapture();
         cap->open(camnum);
-        cvVideoCapture *ccap;
-        ccap = (cvVideoCapture*)malloc(sizeof(cvVideoCapture));
+        CvVideoCapture *ccap;
+        ccap = (CvVideoCapture*)malloc(sizeof(CvVideoCapture));
         ccap->raw_ptr = cap;
-        return *ccap;
+        return ccap;
+        
+        //return ccap;
     }
 
     void helloTest()
