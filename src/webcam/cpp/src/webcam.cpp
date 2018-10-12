@@ -87,6 +87,7 @@ extern "C"
 
     void cv_release_video_capture(CvVideoCapture *cap) {
         ((VideoCapture*)(cap->raw_ptr))->release();
+        delete cap;
     }
 
     int cv_imwrite(const char *filename, Cv2Mat *mat) {
