@@ -4,6 +4,8 @@ extern crate cc;
 fn main() {
     cc::Build::new()
         .cpp(true)
+ 	.flag("-std=c++11")
+	.include("/usr/local/opt/opencv/include/opencv4")
         .warnings(true)
         .file("src/webcam/cpp/src/webcam.cpp")
         .include("src/webcam/cpp/include")
