@@ -48,8 +48,15 @@ extern "C"
     }
     
     void cv_read(cvVideoCapture cap, cv2Mat frame) {
+        int retryCnt=3;
         Mat *mat = (Mat*)(frame.raw_ptr);
-        (*((VideoCapture*)(cap.raw_ptr))).read(*mat);
+        while(retryCnt > 0) {
+            (*((VideoCapture*)(cap.raw_ptr))).read(*mat);
+            if(!mat->empty()) {
+                break;
+            }
+            retryCnt--;
+        }
     }
     
    /*

@@ -44,19 +44,6 @@ extern "C" {
     pub fn cv_imencode(ext: *const c_char, img: *const Cv2Mat, params: *const c_int) -> *mut ImgBuffer;
     pub fn cv_free_img_buffer(buf: *mut ImgBuffer) -> c_void;
 
-    pub fn cvNamedWindow(title: *const c_char) -> c_int;
-    pub fn cvShowImage(name: *const c_char, image: *const IplImage) -> c_void;
-    pub fn cvCreateCameraCapture(index: c_int) -> *mut Capture;
-    pub fn cvQueryFrame(capture: *mut Capture) -> *mut IplImage;
-    pub fn cvSaveImage(filename: *const c_char,
-                       image: *const IplImage,
-                       params: *const c_int)
-                       -> c_int;
-    pub fn cvReleaseCapture(capture: &*mut Capture) -> c_void;
-    pub fn cvEncodeImage(ext: *const c_char,
-                         image: *mut IplImage,
-                         params: *const c_int)
-                         -> *mut CvMat;
 }
 #[link(name = "webcam", kind = "static")]
 extern "C" {

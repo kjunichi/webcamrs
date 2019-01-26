@@ -43,15 +43,15 @@ pub fn named_window(title: &str) -> () {
     }
 }
 
-pub fn create_camera_capture(index: i32) -> Capture {
-    Capture { raw: unsafe { ffi::cvCreateCameraCapture(index) } }
-}
+// pub fn create_camera_capture(index: i32) -> Capture {
+//     Capture { raw: unsafe { ffi::cvCreateCameraCapture(index) } }
+// }
 
-pub fn query_frame(capture: &Capture) -> IplImage {
-    let raw_capture = capture.raw;
+// pub fn query_frame(capture: &Capture) -> IplImage {
+//     let raw_capture = capture.raw;
 
-    IplImage { raw: unsafe { ffi::cvQueryFrame(raw_capture) } }
-}
+//     IplImage { raw: unsafe { ffi::cvQueryFrame(raw_capture) } }
+// }
 
 pub fn read(capture: &VideoCapture, frame: &Mat) -> () {
     let raw_videocapture = capture.raw;
@@ -95,12 +95,12 @@ pub fn imencode(ext: &str, img: &Mat, params: Vec<i32>) -> Vec<u8>{
 //     Mat { raw: unsafe { ffi::cv_read(raw_videocapture) } }
 // }
 
-pub fn show_image(name: &str, image: &IplImage) -> () {
-    let raw_image = image.raw;
-    unsafe {
-        ffi::cvShowImage(CString::new(name).unwrap().as_ptr(), raw_image);
-    }
-}
+// pub fn show_image(name: &str, image: &IplImage) -> () {
+//     let raw_image = image.raw;
+//     unsafe {
+//         ffi::cvShowImage(CString::new(name).unwrap().as_ptr(), raw_image);
+//     }
+// }
 
 pub fn release(capture: &VideoCapture) -> () {
     let raw_videocapture = capture.raw;
@@ -124,43 +124,43 @@ pub fn wait_key(delay: i32) -> i32 {
     unsafe { ffi::cv_wait_key(delay) }
 }
 
-pub fn save_image(name: &str, image: &IplImage) -> i32 {
-    let raw_image = image.raw;
-    unsafe {
-        ffi::cvSaveImage(CString::new(name).unwrap().as_ptr(),
-                         raw_image,
-                         0 as *const i32)
-    }
-}
+// pub fn save_image(name: &str, image: &IplImage) -> i32 {
+//     let raw_image = image.raw;
+//     unsafe {
+//         ffi::cvSaveImage(CString::new(name).unwrap().as_ptr(),
+//                          raw_image,
+//                          0 as *const i32)
+//     }
+// }
 
-pub fn encode_image(ext: &str, image: &IplImage, params: Vec<i32>) -> CvMat {
-    let raw_image = image.raw;
-    let raw_mat = unsafe {
-        ffi::cvEncodeImage(CString::new(ext).unwrap().as_ptr(),
-                           raw_image,
-                           0 as *const i32)
-    };
-    let len = unsafe { (*raw_mat).cols };
-    let mut buf: Vec<u8> = Vec::new();
-    let ptr = unsafe { (*raw_mat).ptr };
-    for i in 0..len {
-        buf.push(unsafe { *(ptr.offset(i as isize)) });
-    }
-    let mat = CvMat {
-        raw: raw_mat,
-        cols: unsafe { (*raw_mat).cols },
-        rows: unsafe { (*raw_mat).rows },
-        buf: buf,
-    };
-    return mat;
-}
+// pub fn encode_image(ext: &str, image: &IplImage, params: Vec<i32>) -> CvMat {
+//     let raw_image = image.raw;
+//     let raw_mat = unsafe {
+//         ffi::cvEncodeImage(CString::new(ext).unwrap().as_ptr(),
+//                            raw_image,
+//                            0 as *const i32)
+//     };
+//     let len = unsafe { (*raw_mat).cols };
+//     let mut buf: Vec<u8> = Vec::new();
+//     let ptr = unsafe { (*raw_mat).ptr };
+//     for i in 0..len {
+//         buf.push(unsafe { *(ptr.offset(i as isize)) });
+//     }
+//     let mat = CvMat {
+//         raw: raw_mat,
+//         cols: unsafe { (*raw_mat).cols },
+//         rows: unsafe { (*raw_mat).rows },
+//         buf: buf,
+//     };
+//     return mat;
+// }
 
-pub fn release_capture(capture: &Capture) -> () {
-    let raw_capture = capture.raw;
-    unsafe {
-        ffi::cvReleaseCapture(&raw_capture);
-    }
-}
+// pub fn release_capture(capture: &Capture) -> () {
+//     let raw_capture = capture.raw;
+//     unsafe {
+//         ffi::cvReleaseCapture(&raw_capture);
+//     }
+// }
 
 pub fn destroy_all_windows() ->() {
     unsafe {
