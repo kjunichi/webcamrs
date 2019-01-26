@@ -2,11 +2,7 @@
 #include <string>
 #include <vector>
 
-#ifdef _WIN32
 #include "opencv2/opencv.hpp"
-#else
-#include "opencv4/opencv2/opencv.hpp"
-#endif
 
 using namespace std;
 using namespace cv;
