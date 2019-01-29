@@ -96,30 +96,30 @@ extern "C"
         delete buf;
     }
 
-    void cv_imshow(const char*winname, Cv2Mat *mat) {
+    void cv_imshow(const char*winname, cv2Mat *mat) {
         Mat frame = *((Mat*)(mat->raw_ptr));
         if(!frame.empty()) {
             imshow(winname, frame);
         }
     }
 
-    void cv_release_video_capture(CvVideoCapture *cap) {
+    void cv_release_video_capture(cvVideoCapture *cap) {
         ((VideoCapture*)(cap->raw_ptr))->release();
         delete cap;
     }
 
-    int cv_imwrite(const char *filename, Cv2Mat *mat) {
+    int cv_imwrite(const char *filename, cv2Mat *mat) {
         Mat frame = *((Mat*)(mat->raw_ptr));
         imwrite(filename,frame);
         return 0;
     }
 
-    CvVideoCapture *cv_video_capture(int camnum) {
+    cvVideoCapture *cv_video_capture(int camnum) {
         VideoCapture *cap;
         cap = new VideoCapture();
         cap->open(camnum);
-        CvVideoCapture *ccap;
-        ccap = (CvVideoCapture*)malloc(sizeof(CvVideoCapture));
+        cvVideoCapture *ccap;
+        ccap = (cvVideoCapture*)malloc(sizeof(cvVideoCapture));
         ccap->raw_ptr = cap;
         return ccap;
         

@@ -5,8 +5,6 @@ mod link;
 
 pub enum Capture {}
 pub enum IplImage {}
-pub enum CvVideoCapture {}
-pub enum Cv2Mat {}
 
 #[repr(C)] pub struct CvVideoCapture { private: [u8; 0] }
 #[repr(C)] pub struct Cv2Mat { private: [u8; 0] }
@@ -49,10 +47,6 @@ extern "C" {
 
 }
 
-#[link(name = "webcam", kind = "static")]
-extern "C" {
-    pub fn helloTest() -> c_void;
-}
 #[link(name = "webcam", kind = "static")]
 extern "C" {
     pub fn helloTest() -> c_void;
