@@ -68,6 +68,21 @@ pub fn mat_cols(img: &Mat) -> i32 {
     unsafe { ffi::cv_mat_cols(img.raw) }
 }
 
+pub fn read(capture: &VideoCapture, frame: &Mat) -> () {
+    let raw_videocapture = capture.raw;
+    let raw_mat = frame.raw;
+    unsafe { ffi::cv_read(raw_videocapture, raw_mat); }
+}
+
+pub fn imwrite(filename: &str, frame: &Mat) -> i32 {
+    let raw_mat = frame.raw;
+    unsafe { ffi::cv_imwrite(CString::new(filename).unwrap().as_ptr(), raw_mat) }
+}
+
+pub fn mat_cols(img: &Mat) -> i32 {
+    unsafe { ffi::cv_mat_cols(img.raw) }
+}
+
 pub fn mat_data(img: &Mat) -> Vec<u8> {
     let mut buf: Vec<u8> = Vec::new();
     let len = unsafe { ffi::cv_mat_cols(img.raw) };
@@ -95,16 +110,39 @@ pub fn imencode(ext: &str, img: &Mat, params: Vec<i32>) -> Vec<u8>{
 //     Mat { raw: unsafe { ffi::cv_read(raw_videocapture) } }
 // }
 
-// pub fn show_image(name: &str, image: &IplImage) -> () {
-//     let raw_image = image.raw;
-//     unsafe {
-//         ffi::cvShowImage(CString::new(name).unwrap().as_ptr(), raw_image);
-//     }
+pub fn show_image(name: &str, image: &IplImage) -> () {
+    let raw_image = image.raw;
+    unsafe {
+        ffi::cvShowImage(CString::new(name).unwrap().as_ptr(), raw_image);
+    }
+    unsafe { ffi::cv_free_img_buffer(dst_buf.raw) };
+    return buf;
+}
+// pub fn read(capture: &VideoCapture) -> Mat {
+//     let raw_videocapture = capture.raw;
+//     Mat { raw: unsafe { ffi::cv_read(raw_videocapture) } }
 // }
 
 pub fn release(capture: &VideoCapture) -> () {
     let raw_videocapture = capture.raw;
     unsafe { ffi::cv_release_video_capture(raw_videocapture); }
+}
+
+pub fn video_capture(camnum: i32) -> VideoCapture {
+    VideoCapture {
+        raw: unsafe { ffi::cv_video_capture(camnum) }
+    }
+}
+
+pub fn imshow(name: &str, image: &Mat) -> () {
+    let raw_image = image.raw;
+    unsafe {
+        ffi::cv_imshow(CString::new(name).unwrap().as_ptr(), raw_image);
+    }
+}
+
+pub fn wait_key(delay: i32) -> i32 {
+    unsafe { ffi::cv_wait_key(delay) }
 }
 
 pub fn video_capture(camnum: i32) -> VideoCapture {
@@ -161,6 +199,18 @@ pub fn wait_key(delay: i32) -> i32 {
 //         ffi::cvReleaseCapture(&raw_capture);
 //     }
 // }
+
+pub fn destroy_all_windows() ->() {
+    unsafe {
+        ffi::cv_destroy_all_windows();
+    }
+}
+
+pub fn helloTest() -> () {
+    unsafe {
+        ffi::helloTest();
+    }
+}
 
 pub fn destroy_all_windows() ->() {
     unsafe {

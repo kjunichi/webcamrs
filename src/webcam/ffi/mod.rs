@@ -8,6 +8,9 @@ pub enum IplImage {}
 pub enum CvVideoCapture {}
 pub enum Cv2Mat {}
 
+#[repr(C)] pub struct CvVideoCapture { private: [u8; 0] }
+#[repr(C)] pub struct Cv2Mat { private: [u8; 0] }
+
 #[repr(C)]
 pub struct ImgBuffer {
     pub ptr: *mut c_uchar,
@@ -44,6 +47,11 @@ extern "C" {
     pub fn cv_imencode(ext: *const c_char, img: *const Cv2Mat, params: *const c_int) -> *mut ImgBuffer;
     pub fn cv_free_img_buffer(buf: *mut ImgBuffer) -> c_void;
 
+}
+
+#[link(name = "webcam", kind = "static")]
+extern "C" {
+    pub fn helloTest() -> c_void;
 }
 #[link(name = "webcam", kind = "static")]
 extern "C" {
