@@ -30,7 +30,7 @@ fn main() {
     //webcamrs::webcam::helloTest();
     //webcamrs::webcam::destroy_all_windows();
     webcamrs::webcam::named_window(name);
-    let cap = webcamrs::webcam::video_capture(0);
+    let cap = webcamrs::webcam::cv_video_capture_with_api_preference(0,webcamrs::webcam::CAP_DSHOW );
     let frame = webcamrs::webcam::create_mat();
     loop {
         webcamrs::webcam::read(&cap, &frame);

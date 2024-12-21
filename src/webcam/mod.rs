@@ -4,6 +4,8 @@ extern crate libc;
 
 use std::ffi::CString;
 
+pub const CAP_DSHOW: i32 = 700;
+
 pub struct Capture {
     raw: *mut ffi::Capture,
 }
@@ -89,6 +91,12 @@ pub fn release(capture: &VideoCapture) -> () {
 pub fn video_capture(camnum: i32) -> VideoCapture {
     VideoCapture {
         raw: unsafe { ffi::cv_video_capture(camnum) }
+    }
+}
+
+pub fn cv_video_capture_with_api_preference(camnum: i32, apiPreference: i32) -> VideoCapture {
+    VideoCapture {
+        raw: unsafe { ffi::cv_video_capture_with_apiPreference(camnum, apiPreference) }
     }
 }
 
