@@ -94,7 +94,7 @@ pub fn video_capture(camnum: i32) -> VideoCapture {
     }
 }
 
-pub fn cv_video_capture_with_api_preference(camnum: i32, apiPreference: i32) -> VideoCapture {
+pub fn video_capture_with_api_preference(camnum: i32, apiPreference: i32) -> VideoCapture {
     VideoCapture {
         raw: unsafe { ffi::cv_video_capture_with_apiPreference(camnum, apiPreference) }
     }
