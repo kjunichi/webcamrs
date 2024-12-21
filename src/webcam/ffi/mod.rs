@@ -34,6 +34,7 @@ extern "C" {
     //pub fn cv_read(capture: *mut CvVideoCapture) -> *mut Cv2Mat;
     pub fn cv_imshow(winname: *const c_char, mat: *const Cv2Mat) -> c_void;
     pub fn cv_video_capture(camnum: c_int) -> *mut CvVideoCapture;
+    pub fn cv_video_capture_with_apiPreference(camnum: c_int, apiPreference: c_int) -> *mut CvVideoCapture;
     pub fn cv_wait_key(delay: c_int) -> c_int;
     pub fn cv_release_video_capture(capture: *mut CvVideoCapture) -> c_void;
     pub fn cv_create_mat() -> *mut Cv2Mat;

@@ -114,10 +114,22 @@ extern "C"
         return 0;
     }
 
+    cvVideoCapture *cv_video_capture_with_apiPreference(int camnum, int apiPreference) {
+        VideoCapture *cap;
+        cap = new VideoCapture();
+        cap->open(camnum, apiPreference);
+        cvVideoCapture *ccap;
+        ccap = (cvVideoCapture*)malloc(sizeof(cvVideoCapture));
+        ccap->raw_ptr = cap;
+        return ccap;
+        
+        //return ccap;
+    }
+
     cvVideoCapture *cv_video_capture(int camnum) {
         VideoCapture *cap;
         cap = new VideoCapture();
-        cap->open(camnum);
+        cap->open(camnum, CAP_DSHOW);
         cvVideoCapture *ccap;
         ccap = (cvVideoCapture*)malloc(sizeof(cvVideoCapture));
         ccap->raw_ptr = cap;
