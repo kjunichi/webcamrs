@@ -9,6 +9,8 @@ pub const CAP_PROP_FRAME_WIDTH: i32 = 3;
 pub const CAP_PROP_FRAME_HEIGHT: i32 = 4;
 pub const CAP_PROP_FPS : i32 = 5;
 
+pub const CAP_DSHOW: i32 = 700;
+
 pub struct Capture {
     raw: *mut ffi::Capture,
 }
