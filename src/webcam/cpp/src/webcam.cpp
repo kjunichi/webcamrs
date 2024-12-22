@@ -58,6 +58,12 @@ extern "C"
             retryCnt--;
         }
     }
+
+    void video_capture_set(cvVideoCapture *cap, int prod_id, double value) {
+        VideoCapture *videoCapture = (VideoCapture*)(cap->raw_ptr);
+        videoCapture->set(prod_id, value);
+        cout << "prod_id" << prod_id << ", value = " << value << endl;
+    }
     
    /*
     cv2Mat cv_read(cvVideoCapture cap) {

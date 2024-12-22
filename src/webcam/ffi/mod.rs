@@ -1,5 +1,6 @@
 extern crate libc;
-use self::libc::{c_char, c_int, c_void, c_uchar};
+
+use self::libc::{c_char, c_int, c_void, c_uchar,c_double};
 
 mod link;
 
@@ -16,16 +17,16 @@ pub struct ImgBuffer {
     pub raw: *mut c_void,
 }
 
-pub struct CvMat {
-    pub _type: c_int,
-    pub step: c_int,
+// pub struct CvMat {
+//     pub _type: c_int,
+//     pub step: c_int,
 
-    pub refcount: *mut c_int,
-    pub hdr_refcount: c_int,
-    pub ptr: *mut c_uchar,
-    pub rows: c_int,
-    pub cols: c_int,
-}
+//     pub refcount: *mut c_int,
+//     pub hdr_refcount: c_int,
+//     pub ptr: *mut c_uchar,
+//     pub rows: c_int,
+//     pub cols: c_int,
+// }
 
 extern "C" {
     pub fn cv_destroy_all_windows() -> c_void;
@@ -45,7 +46,7 @@ extern "C" {
     pub fn cv_mat_data(mat: *const Cv2Mat) -> *mut c_uchar;
     pub fn cv_imencode(ext: *const c_char, img: *const Cv2Mat, params: *const c_int) -> *mut ImgBuffer;
     pub fn cv_free_img_buffer(buf: *mut ImgBuffer) -> c_void;
-
+    pub fn video_capture_set(cap : *mut CvVideoCapture, prod_id:c_int , value: c_double) -> c_void;
 }
 
 #[link(name = "webcam", kind = "static")]

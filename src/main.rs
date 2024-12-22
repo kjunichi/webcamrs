@@ -1,3 +1,5 @@
+use webcamrs::webcam::{CAP_PROP_FRAME_HEIGHT, CAP_PROP_FRAME_WIDTH};
+
 extern crate webcamrs;
 
 fn main() {
@@ -32,6 +34,8 @@ fn main() {
     webcamrs::webcam::named_window(name);
     let cap = webcamrs::webcam::video_capture_with_api_preference(0,webcamrs::webcam::CAP_DSHOW );
     let frame = webcamrs::webcam::create_mat();
+    cap.set(CAP_PROP_FRAME_WIDTH,1280.0);
+    cap.set(CAP_PROP_FRAME_HEIGHT,720.0);
     loop {
         webcamrs::webcam::read(&cap, &frame);
         //let frame = webcamrs::webcam::read(&cap);
