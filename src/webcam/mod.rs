@@ -2,9 +2,12 @@ pub mod ffi;
 
 extern crate libc;
 
-use std::ffi::CString;
+use std::ffi::{c_void, CString};
 
 pub const CAP_DSHOW: i32 = 700;
+pub const CAP_PROP_FRAME_WIDTH: i32 = 3;
+pub const CAP_PROP_FRAME_HEIGHT: i32 = 4;
+pub const CAP_PROP_FPS : i32 = 5;
 
 pub struct Capture {
     raw: *mut ffi::Capture,
@@ -27,12 +30,20 @@ pub struct Mat {
     pub buf: Vec<u8>,
 }
 
-pub struct CvMat {
-    raw: *mut ffi::CvMat,
-    pub cols: i32,
-    pub rows: i32,
-    pub buf: Vec<u8>,
+impl VideoCapture {
+    pub fn set(&self, prod_id: i32, value: f64) -> () {
+        unsafe {
+            ffi::video_capture_set(self.raw, prod_id, value);
+        };
+    }
 }
+
+// pub struct CvMat {
+//     raw: *mut ffi::CvMat,
+//     pub cols: i32,
+//     pub rows: i32,
+//     pub buf: Vec<u8>,
+// }
 
 pub fn create_mat() -> Mat {
     Mat { buf: Vec::new(),
